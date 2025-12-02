@@ -1,0 +1,44 @@
+name: Convert markdown to docx
+
+on: 
+  push:
+    branches:
+      - publish
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo content               # fetch the contents of the repository
+        uses: actions/checkout@v2
+
+      - name: makedir output
+        run: mkdir -p output
+          
+      - name: markdown to html
+        uses: docker://pandoc/crossref:2.14.0.3
+        with:
+          args:  >-  # allows you to break string into multiple lines
+            text/manuscript.md
+            --template templates/template.html
+            --output=output/manuscript.html 
+            -F pandoc-crossref 
+            --citeproc
+            --natbib
+          
+      - name: html to docx
+        uses: docker://pandoc/crossref:2.14.0.3
+        with:
+          args:  >-  # allows you to break string into multiple lines
+            output/manuscript.html
+            --output=output/manuscript.docx
+            
+      - name: Commit files
+        run: |
+          git config --global user.name 'PeterBetlem'
+          git config --global user.email 'PeterBetlem@users.noreply.github.com'
+          git add --all
+          git commit -m "Automated build"
+          git push
+          

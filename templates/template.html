@@ -1,0 +1,58 @@
+<html>
+<center>
+<head>
+<title>$title$</title>
+</head>
+$for(author)$
+$author.name$<sup>$author.affiliation$$if(author.footnote)$,$author.footnote$$endif$</sup> $if(author.email)$ ($author.email$)$endif$,
+$endfor$
+<br /><br />
+
+$for(address)$
+<sup>$address.code$</sup>$address.address$ <br />
+$endfor$
+$for(footnote)$
+<sup>$footnote.code$</sup>$footnote.text$ <br />
+$endfor$
+</center>
+<br /><br />
+
+<div style="page-break-before:always;"></div>
+$if(graphabs)$
+<h2>Graphical abstract</h2><br />
+<figure>
+  <img src=$graphabs$ alt="Graphical abstract" style="width:100%">
+  <figcaption>Graphical abstract for $title$.</figcaption>
+</figure><br />
+$endif$
+<div style="page-break-before:always;"></div>
+
+$if(highlights)$
+<h2>Highlights for $title$</h2><br />
+<ul>
+  $for(highlights)$
+  <li>$highlights.item$</li>
+    $endfor$
+</ul> <br />
+$endif$
+
+$if(abstract)$
+<h2>Abstract</h2>
+  $abstract$
+$endif$
+<br />
+<div style="page-break-before:always;"></div>
+
+$if(keywords)$
+<b>Keywords:</b> $for(keywords)$ $keywords$ $endfor$
+$endif$ <br />
+
+<body>
+  $body$
+</body>
+
+$for(include-after)$
+$include-after$
+
+$endfor$
+</html>
